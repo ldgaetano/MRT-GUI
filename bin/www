@@ -8,6 +8,7 @@ var app = require('../app');
 var debug = require('debug')('mrt-gui:server');
 var http = require('http');
 
+
 /**
  * Get port from environment and store in Express.
  */
@@ -20,6 +21,64 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
+
+/**
+ * node serialport implementation
+ */
+
+// SerialPort setup
+const SerialPort = require('serialport');
+const Readline = require('@serialport/parser-readline');
+const portName = '/dev/cu.usbmodem1421';
+const myPort = new SerialPort(portName, { baudRate: 9600 });
+const parser = myPort.pipe(new Readline({ delimiter: '\r\n' }));
+
+// Open errors will be emitted as an error event
+parser.on('error', function(err) {
+    console.log('Error: ', err.message);
+});
+
+// Read data from serialport
+//parser.on('data', function(data) {
+//    console.log(data);
+//});
+
+/**
+ * socket.io implementation
+ */
+
+var io = require('socket.io')(server);
+
+io.on('connection', function(socket){
+    console.log('USER CONNECTED');
+
+    /*
+    socket.on('get data', function(){
+        console.log('request received');
+
+        // Read data from serialport
+        parser.on('data', function(data) {
+            //console.log(data);
+            io.emit('send data', data);
+            //console.log('request sent');
+        });
+        //io.emit('send data', 'test data');
+        //console.log('request sent');
+    });
+  */
+
+    // Read data from serialport
+    parser.on('data', function(data) {
+        console.log(data);
+        io.emit('send data', data);
+        //console.log('request sent');
+    });
+
+    socket.on('disconnect', function(){
+        console.log('USER DISCONNECTED');
+    });
+});
+
 
 /**
  * Listen on provided port, on all network interfaces.

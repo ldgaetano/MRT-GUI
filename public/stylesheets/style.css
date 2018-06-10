@@ -1,0 +1,39 @@
+body {
+  padding: 50px;
+  font-size: 14px;
+  font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+#main-container {
+  display: block;
+  height: 100%;
+  width: 900px;
+  margin: auto;
+}
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+  height: 250px;
+  font-size: 20px;
+}
+
+#title-container {
+  display: flex;
+}
+
+.data-container {
+  display: flex;
+  width: 200px;
+  height: 100px;
+  border: 1px solid black;
+}
+
+.data-element {
+  list-style-type: none;
+}

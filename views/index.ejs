@@ -4,8 +4,53 @@
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
+
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+
+    <div id="main-container">
+
+      <h1>The Official MRT Avionics GUI</h1>
+
+      <div class="input-container">
+
+        <div class="title-container">
+          <p>Test Data</p>
+        </div>
+        <div class="data-container">
+          <p class="data-field" id="data-1-field"><li class="data-element"></li></p>
+        </div>
+        <div class="button-container">
+          <button id="data-1-button" type="submit">GET DATA</button>
+        </div>
+      </div>
+    </div>
+
+  <!-- JS code -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+      // socket.io client-side code
+      $(function () {
+          var socket = io();
+          /*
+          $('#data-1-button').click(function(){
+              console.log('request sent');
+              socket.emit('get data');
+
+              socket.on('send data', function(data) {
+                  console.log('request received');
+                  $('#data-1-field').append($('<li>').text(data));
+              });
+
+              return false;
+          });
+          */
+          socket.on('send data', function(data) {
+              console.log('request received');
+              $('.data-element').remove();
+              $('#data-1-field').append($('<li class="data-element">').text(data));
+          });
+      });
+    </script>
   </body>
 </html>
