@@ -3,188 +3,122 @@
   <head>
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="icon" sizes="16x16 32x32 64x64" href="/images/favicon.ico">
   </head>
 
   <body>
+
+    <div id="input-container">
+
+      <h1 style="position: fixed">LIVE Telemetry</h1>
+
+      <ul id="input-container-list">
+
+      <li class="input-list-item" id="input-lat">
+        <div class="title-container">
+          <span>Latitude</span>
+        </div>
+        <div class="data-container" id="data-field-1">
+          <span class="data-element">NULL</span>
+        </div>
+      </li>
+
+      <li class="input-list-item" id="input-long">
+        <div class="title-container">
+          <span>Longitude</span>
+        </div>
+        <div class="data-container" id="data-field-2">
+          <span class="data-element">NULL</span>
+        </div>
+      </li>
+
+      <li class="input-list-item" id="input-alt">
+        <div class="title-container">
+          <span>Altitude</span>
+        </div>
+        <div class="data-container" id="data-field-3">
+          <span class="data-element">NULL</span>
+        </div>
+      </li>
+
+      <li class="input-list-item" id="input-time">
+        <div class="title-container">
+          <span>Time</span>
+        </div>
+        <div class="data-container" id="data-field-4">
+          <span class="data-element">NULL</span>
+        </div>
+      </li>
+
+
+      <li class="input-list-item" id="input-temp">
+        <div class="title-container">
+          <span>Temperature</span>
+        </div>
+        <div class="data-container" id="data-field-5">
+          <span class="data-element">NULL</span>
+        </div>
+      </li>
+
+
+      <li class="input-list-item" id="input-vel">
+        <div class="title-container">
+          <span>Velocity</span>
+        </div>
+        <div class="data-container" id="data-field-6">
+          <span class="data-element">NULL</span>
+        </div>
+      </li>
+
+      <li class="input-list-item" id="input-acc">
+        <div class="title-container">
+          <span>Acceleration</span>
+        </div>
+        <div class="data-container" id="data-field-7">
+          <span class="data-element">NULL</span>
+        </div>
+      </li>
+
+      <li class="input-list-item" id="input-sat">
+        <div class="title-container">
+          <span>Satellites</span>
+        </div>
+        <div class="data-container" id="data-field-8">
+          <span class="data-element">NULL</span>
+        </div>
+      </li>
+
+    </ul>
+
+      <img id="mrt_logo" src="images/MRT_logo.png" alt="MRT Logo">
+
+    </div>
+
 
     <div id="main-container">
 
       <h1>The Official MRT Avionics GUI</h1>
 
-      <div id="input-container">
-
-        <ul id="input-container-list">
-
-          <li class="input-list-item" id="input-lat">
-            <div class="title-container">
-              <span>Latitude</span>
-            </div>
-            <div class="data-container" id="data-field-1">
-              <span class="data-element">NULL</span>
-            </div>
-          </li>
-
-          <li class="input-list-item" id="input-long">
-            <div class="title-container">
-              <span>Longitude</span>
-            </div>
-            <div class="data-container" id="data-field-2">
-              <span class="data-element">NULL</span>
-            </div>
-          </li>
-
-          <li class="input-list-item" id="input-alt">
-            <div class="title-container">
-              <span>Altitude</span>
-            </div>
-            <div class="data-container" id="data-field-3">
-              <span class="data-element">NULL</span>
-            </div>
-          </li>
-
-          <li class="input-list-item" id="input-time">
-            <div class="title-container">
-              <span>Time</span>
-            </div>
-            <div class="data-container" id="data-field-4">
-              <span class="data-element">NULL</span>
-            </div>
-          </li>
-
-
-          <li class="input-list-item" id="input-temp">
-            <div class="title-container">
-              <span>Temperature</span>
-            </div>
-            <div class="data-container" id="data-field-5">
-              <span class="data-element">NULL</span>
-            </div>
-          </li>
-
-
-          <li class="input-list-item" id="input-vel">
-            <div class="title-container">
-              <span>Velocity</span>
-            </div>
-            <div class="data-container" id="data-field-6">
-              <span class="data-element">NULL</span>
-            </div>
-          </li>
-
-          <li class="input-list-item" id="input-acc">
-            <div class="title-container">
-              <span>Acceleration</span>
-            </div>
-            <div class="data-container" id="data-field-7">
-              <span class="data-element">NULL</span>
-            </div>
-          </li>
-
-          <li class="input-list-item" id="input-sat">
-            <div class="title-container">
-              <span>Satellites</span>
-            </div>
-            <div class="data-container" id="data-field-8">
-              <span class="data-element">NULL</span>
-            </div>
-          </li>
-
-
-
-        </ul>
-
-      </div>
-
       <div class="graph-container" id="graph-alt" ></div>
       <div class="graph-container" id="graph-temp" ></div>
+      <div class="graph-container" id="graph-position" ></div>
 
+      <footer>
+        <span id="copyright">McGill Rocket Team &copy;2018</span>
+      </footer>
 
     </div>
+
+
 
     <!-- JS code -->
     <script src="/bower_components/jquery/dist/jquery.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="/bower_components/highcharts/highcharts.js"></script>
+    <script src="/bower_components/highcharts/highstock.js"></script>
     <script src="/bower_components/highcharts/modules/exporting.js"></script>
     <script src="/bower_components/highcharts/modules/offline-exporting.js"></script>
-    <script>
-        // client-side code
-        $(function () {
-            var socket = io();
+    <script src="/javascripts/scripts.js"></script>
 
-            // Create empty altitude chart
-            var chart_altitude = Highcharts.chart({
-                chart: {
-                    renderTo: 'graph-alt',
-                    type: 'line'
-                },
-                title: {
-                    text: 'Rocket Altitude'
-                },
-                xAxis: {
-                    title: {
-                        text: "Time (ms)"
-                    }
-                },
-                yAxis: {
-                    title: {
-                        text: 'Altitude (m)'
-                    }
-                },
-                series: [{
-                    name: "Altitude",
-                    data: []
-                }]
-            });
-
-            // Create empty temperature chart
-            var chart_temperature = Highcharts.chart({
-                chart: {
-                    renderTo: 'graph-temp',
-                    type: 'line'
-                },
-                title: {
-                    text: 'Rocket Temperature'
-                },
-                xAxis: {
-                    title: {
-                        text: "Time (ms)"
-                    }
-                },
-                yAxis: {
-                    title: {
-                        text: 'Temperature (Celsius)'
-                    }
-                },
-                series: [{
-                    name: "Temperature",
-                    data: []
-                }]
-            });
-
-            socket.on('send data', function (data) {
-                console.log('request received');
-
-                // Convert JSON to javascript
-                var dataObject = JSON.parse(data);
-
-                $('.data-element').remove();
-                $('#data-field-1').append($('<span class="data-element">').text(dataObject.lat));
-                $('#data-field-2').append($('<span class="data-element">').text(dataObject.long));
-                $('#data-field-3').append($('<span class="data-element">').text(dataObject.alt));
-                $('#data-field-4').append($('<span class="data-element">').text(dataObject.time));
-                $('#data-field-5').append($('<span class="data-element">').text(dataObject.temp));
-                $('#data-field-6').append($('<span class="data-element">').text(dataObject.vel));
-                $('#data-field-7').append($('<span class="data-element">').text(dataObject.acc));
-                $('#data-field-8').append($('<span class="data-element">').text(dataObject.sat));
-
-                // Add data point to charts
-                var alt_point = [dataObject.time, dataObject.alt];
-                var temp_point = [dataObject.time, dataObject.temp];
-                chart_altitude.series[0].addPoint(alt_point, true, false);
-                chart_temperature.series[0].addPoint(temp_point, true, false);
-            });
-        });
-    </script>
   </body>
 </html>

@@ -8,7 +8,6 @@ var app = require('../app');
 var debug = require('debug')('mrt-gui:server');
 var http = require('http');
 
-
 /**
  * Get port from environment and store in Express.
  */
@@ -30,22 +29,24 @@ var server = http.createServer(app);
 // Function to check data
 function checkData(data) {
     // parse data
-    var re = /,/;
+    const re = /,/;
     data = data.split(re);
     // check size of array
-    var size = 8;
+    const size = 8; // change to 10 for actual flight
     if (data.length === size) {
         // remove first and last element of array
-        var first = data.shift();
-        var last = data.pop();
+        const first = data.shift();
+        const last = data.pop();
         if ( (first === 'S') && (last === 'E') ) {
-            console.log
+            console.log("Data parsed successfully");
             return data;
         } else {
-            return "Array head/footer error";
+            console.log("Array head/footer error");
+            return null;
         }
     } else {
-        return "Array length error";
+        console.log("Array length error");
+        return null;
     }
 }
 
@@ -66,7 +67,8 @@ function toNumeric(data) {
 }
 
 // Function to create JSON data object
-function toJSONObject(data) {
+function toObject(data) {
+
     var dataJSON = {
         "lat": data[0],
         "long": data[1],
@@ -80,6 +82,14 @@ function toJSONObject(data) {
 
     return dataJSON;
 }
+
+/**
+ * Files system writeStream implementation
+ */
+
+// Use the file system
+var fs = require('fs');
+
 
 /**
  * node serialport implementation
@@ -112,6 +122,14 @@ var io = require('socket.io')(server);
 io.on('connection', function(socket){
     console.log('USER CONNECTED');
 
+    // Create writeStream to store data
+    var ws = fs.createWriteStream('data/rocket_data.txt');
+
+    ws.on('finish', () =>  {
+        console.log("Disconnected from write stream!");
+    });
+
+
     /*
     socket.on('get data', function(){
         console.log('request received');
@@ -127,28 +145,53 @@ io.on('connection', function(socket){
     });
   */
 
+    // Get current time in milliseconds
+    var prevTime = Date.now();
+
     // Read data from serialport
     // data object is of type String
     parser.on('data', function(data) {
-        console.log(data);
-        var dataArray = checkData(data);
-        console.log(dataArray);
 
-        // Check if variable is of type array
-        if (dataArray.constructor === Array) {
-            // convert array values to integers and floats
-            var dataArrayInt = toNumeric(dataArray);
-            console.log(dataArrayInt);
-            // create JSON object
-            var dataObject = toJSONObject(dataArrayInt);
-            console.log(dataObject);
-            io.emit('send data', JSON.stringify(dataObject));
-            console.log('request sent');
+        console.log("Raw Data: ", data);
+
+        // Parse the data
+        var dataParsed = checkData(data);
+        console.log("Parsed Data: ", dataParsed);
+
+        // Check if array was returned successfully
+        if ((dataParsed.constructor === Array) && (dataParsed !== null)) {
+
+            // Convert array values to integers and floats
+            var dataParsedNum = toNumeric(dataParsed);
+            console.log(dataParsedNum);
+
+            // Save parsed numerical data to .txt file
+            ws.write(dataParsedNum + '\n');
+
+            // Only send data every one second
+            const threshold = 1000;
+            var curTime =  Date.now();
+            var deltaTime = curTime - prevTime
+
+            if (deltaTime >= threshold) {
+
+                // Create JSON object
+                var dataObject = toObject(dataParsedNum);
+                console.log(dataObject);
+
+                io.emit('send data', JSON.stringify(dataObject));
+                console.log('request sent');
+
+                // Set the previous time to the current time
+                prevTime = curTime;
+            }
+
         }
     });
 
     socket.on('disconnect', function(){
         console.log('USER DISCONNECTED');
+        ws.end(); // end the writeStream
     });
 });
 

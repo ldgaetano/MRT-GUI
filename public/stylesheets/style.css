@@ -2,6 +2,8 @@ body {
   padding: 50px;
   font-size: 14px;
   font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+  display: flex;
+  flex-direction: row;
 }
 
 a {
@@ -11,19 +13,23 @@ a {
 #main-container {
   display: flex;
   flex-direction: column;
-  width: 900px;
-  margin: auto;
+  width: auto;
+  margin-left: 0px;
+  margin-right: auto;
 }
 
 #input-container {
   display: flex;
-  width: 100%;
-  margin-bottom: 20px;
+  flex-direction: column;
+  width: 400px;
+  margin-left: auto;
 }
 
 #input-container-list {
   list-style-type: none;
-  width: 300px;
+  position: fixed;
+  margin-top: 85px;
+  padding-left: 15px;
 }
 
 .input-list-item {
@@ -52,7 +58,31 @@ a {
 }
 
 .graph-container {
-  width: 500px;
-  height: 500px;
-  margin-bottom: 50px;
+  width: 800px;
+  height: 600px;
+  margin-bottom: 100px;
+}
+
+#logo-container {
+  display: flex;
+  flex-direction: column;
+}
+
+#mrt_logo {
+  width: 200px;
+  height: 200px;
+  position: fixed;
+  margin-top: 425px;
+}
+
+footer {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  text-align: center;
+  font-size: 12px;
+}
+
+#copyright {
+  margin: auto;
 }
