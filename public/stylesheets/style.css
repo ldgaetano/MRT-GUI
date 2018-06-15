@@ -9,31 +9,50 @@ a {
 }
 
 #main-container {
-  display: block;
-  height: 100%;
+  display: flex;
+  flex-direction: column;
   width: 900px;
   margin: auto;
 }
 
-.input-container {
+#input-container {
   display: flex;
-  flex-direction: column;
-  width: 500px;
-  height: 250px;
-  font-size: 20px;
+  width: 100%;
+  margin-bottom: 20px;
 }
 
-#title-container {
+#input-container-list {
+  list-style-type: none;
+  width: 300px;
+}
+
+.input-list-item {
   display: flex;
+  flex-direction: row;
+  width: 200px;
+  height: 35px;
+}
+
+.title-container {
+  display: flex;
+  width: 125px;
+  height: inherit;
+  margin-right: 20px;
 }
 
 .data-container {
   display: flex;
-  width: 200px;
-  height: 100px;
-  border: 1px solid black;
+  width: 50px;
+  height: inherit;
+  /*border: 1px solid black;*/
 }
 
 .data-element {
   list-style-type: none;
+}
+
+.graph-container {
+  width: 500px;
+  height: 500px;
+  margin-bottom: 50px;
 }

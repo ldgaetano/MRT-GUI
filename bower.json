@@ -1,0 +1,21 @@
+{
+  "name": "mrt-gui",
+  "description": "Avionics GUI for the McGIll Rocket Team",
+  "main": "",
+  "authors": [
+    "Luca D'Angelo <ldgaetano@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/lucagdangelo/MRT-GUI",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.3.1",
+    "highcharts": "^6.1.0"
+  }
+}
