@@ -31,8 +31,9 @@ function checkData(data) {
     // parse data
     const re = /,/;
     data = data.split(re);
+
     // check size of array
-    const size = 8; // change to 10 for actual flight
+    const size = 10; // change to 10 for actual flight
     if (data.length === size) {
         // remove first and last element of array
         const first = data.shift();
@@ -99,7 +100,11 @@ var fs = require('fs');
 const SerialPort = require('serialport');
 const Readline = require('@serialport/parser-readline');
 const portName = '/dev/cu.usbmodem1411';
-const myPort = new SerialPort(portName, {baudRate: 9600});
+const myPort = new SerialPort(portName, {baudRate: 9600}, (err) => {
+    if (err) {
+        console.log("Cannot connect to serial port: " + portName);
+    }
+});
 const parser = myPort.pipe(new Readline({ delimiter: '\r\n' }));
 //const parser = myPort.pipe(new Delimiter({delimiter: ','}));
 
