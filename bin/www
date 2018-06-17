@@ -105,18 +105,14 @@ const myPort = new SerialPort(portName, {baudRate: 9600}, (err) => {
         console.log("Cannot connect to serial port: " + portName);
     }
 });
+
+// parser for reading data from serial port until new line is detected
 const parser = myPort.pipe(new Readline({ delimiter: '\r\n' }));
-//const parser = myPort.pipe(new Delimiter({delimiter: ','}));
 
 // Open errors will be emitted as an error event
 parser.on('error', function(err) {
     console.log('Error: ', err.message);
 });
-
-// Read data from serialport
-//parser.on('data', function(data) {
-//    console.log(data);
-//});
 
 /**
  * socket.io implementation
@@ -134,26 +130,10 @@ io.on('connection', function(socket){
         console.log("Disconnected from write stream!");
     });
 
-
-    /*
-    socket.on('get data', function(){
-        console.log('request received');
-
-        // Read data from serialport
-        parser.on('data', function(data) {
-            //console.log(data);
-            io.emit('send data', data);
-            //console.log('request sent');
-        });
-        //io.emit('send data', 'test data');
-        //console.log('request sent');
-    });
-  */
-
     // Get current time in milliseconds
     var prevTime = Date.now();
 
-    // Read data from serialport
+    // Read data from serial port
     // data object is of type String
     parser.on('data', function(data) {
 
