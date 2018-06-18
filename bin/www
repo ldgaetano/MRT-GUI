@@ -67,6 +67,31 @@ function toNumeric(data) {
     return numericalData;
 }
 
+
+// Function for zeroing the time
+var zero = null;
+var prevTime = null;
+function checkTime(time) {
+
+    let newTime = 0;
+
+    if (zero === null) {
+        zero = time;
+        prevTime = time;
+        newTime = (time - zero) / 1000;
+        return newTime;
+    } else if (time > prevTime) {
+        prevTime = time;
+        newTime = (time - zero) / 1000;
+        return newTime;
+    } else {
+        console.log("Error with time data");
+        return time;
+    }
+
+}
+
+
 // Function to create JSON data object
 function toObject(data) {
 
@@ -74,11 +99,11 @@ function toObject(data) {
         "lat": data[0],
         "long": data[1],
         "alt": data[2],
-        "time": data[3],
+        "time": checkTime(data[3]),
         "temp": data[4],
         "vel": data[5],
         "acc": data[6],
-        "sat": data[7],
+        "sat": data[7]
     }
 
     return dataJSON;
