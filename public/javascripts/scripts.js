@@ -157,7 +157,6 @@ $(function () {
             title: {
                 text: 'Velocity (m/s)'
             },
-            max: 500,
             gridLineWidth: 1
         },
         series: [{
