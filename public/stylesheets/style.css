@@ -62,12 +62,11 @@ a {
   width: 100%;
   background-color: white;
   position: fixed;
+  z-index: 1;
 }
 
-#graph-container {
-  display: flex;
+#graph-wrapper {
   margin-top: 50px;
-  z-index: -1;
 }
 
 .graph-container {
