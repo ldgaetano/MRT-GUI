@@ -6,6 +6,7 @@ $(function () {
     var zeroAltTime = null;
     var prevAltTime = null;
     var prevAlt = null;
+    /*
     function checkAltitude(alt, time) {
 
         // set the change in altitude we look for in meters
@@ -32,6 +33,7 @@ $(function () {
 
 
     }
+    */
 
     // Create empty altitude chart
     var chart_altitude = Highcharts.chart({
@@ -55,7 +57,8 @@ $(function () {
             title: {
                 text: 'Altitude (m)'
             },
-            max: 40000
+            max: 40000,
+            gridLineWidth: 1
         },
         series: [{
             name: "Altitude",
@@ -87,7 +90,8 @@ $(function () {
                 text: 'Temperature (Celsius)'
             },
             min: 0,
-            max: 80
+            max: 80,
+            gridLineWidth: 1
         },
         series: [{
             name: "Temperature",
@@ -121,7 +125,8 @@ $(function () {
                 text: 'Latitude (deg)'
             },
             min: -90,
-            max: 90
+            max: 90,
+            gridLineWidth: 1
         },
         series: [{
             name: "Position",
@@ -152,7 +157,8 @@ $(function () {
             title: {
                 text: 'Velocity (m/s)'
             },
-            max: 500
+            max: 500,
+            gridLineWidth: 1
         },
         series: [{
             name: "Velocity",
@@ -181,8 +187,9 @@ $(function () {
         },
         yAxis: {
             title: {
-                text: 'Acceleration (m/s^2)'
-            }
+                text: 'Acceleration (m/s/s)'
+            },
+            gridLineWidth: 1
         },
         series: [{
             name: "Acceleration",
@@ -200,13 +207,13 @@ $(function () {
             var dataObject = JSON.parse(data);
 
             $('.data-element').remove();
-            $('#data-field-1').append($('<span class="data-element">').text(dataObject.lat));
-            $('#data-field-2').append($('<span class="data-element">').text(dataObject.long));
-            $('#data-field-3').append($('<span class="data-element">').text(dataObject.alt));
-            $('#data-field-4').append($('<span class="data-element">').text(dataObject.time));
-            $('#data-field-5').append($('<span class="data-element">').text(dataObject.temp));
-            $('#data-field-6').append($('<span class="data-element">').text(dataObject.vel));
-            $('#data-field-7').append($('<span class="data-element">').text(dataObject.acc));
+            $('#data-field-1').append($('<span class="data-element">').text(dataObject.lat + " " + "(deg)"));
+            $('#data-field-2').append($('<span class="data-element">').text(dataObject.long + " " + "(deg)"));
+            $('#data-field-3').append($('<span class="data-element">').text(dataObject.alt + " " + "(m)"));
+            $('#data-field-4').append($('<span class="data-element">').text(dataObject.time + " " + "(sec)"));
+            $('#data-field-5').append($('<span class="data-element">').text(dataObject.temp + " " + "(deg. Celsius)"));
+            $('#data-field-6').append($('<span class="data-element">').text(dataObject.vel + " " + "(m/s)"));
+            $('#data-field-7').append($('<span class="data-element">').text(dataObject.acc + " " + "(m/s/s)"));
             $('#data-field-8').append($('<span class="data-element">').text(dataObject.sat));
 
             // Add data point to charts

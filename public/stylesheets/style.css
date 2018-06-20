@@ -1,5 +1,6 @@
 body {
-  padding: 50px;
+  padding: 0px 50px 50px 50px;
+  margin-top: 0px;
   font-size: 14px;
   font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
   display: flex;
@@ -27,7 +28,7 @@ a {
 .input-list-item {
   display: flex;
   flex-direction: row;
-  width: 200px;
+  //width: 200px;
   height: 35px;
 }
 
@@ -35,12 +36,12 @@ a {
   display: flex;
   width: 125px;
   height: inherit;
-  margin-right: 20px;
+  //margin-right: 20px;
 }
 
 .data-container {
   display: flex;
-  width: 50px;
+  //width: 50px;
   height: inherit;
 }
 
@@ -54,6 +55,19 @@ a {
   width: auto;
   margin-left: 0px;
   margin-right: auto;
+}
+
+#title-container {
+  display: flex;
+  width: 100%;
+  background-color: white;
+  position: fixed;
+}
+
+#graph-container {
+  display: flex;
+  margin-top: 50px;
+  z-index: -1;
 }
 
 .graph-container {

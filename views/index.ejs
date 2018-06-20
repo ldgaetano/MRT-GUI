@@ -17,7 +17,7 @@
 
         <li class="input-list-item" id="input-lat">
           <div class="title-container">
-            <span>Latitude</span>
+            <span>Lat:</span>
           </div>
           <div class="data-container" id="data-field-1">
             <span class="data-element">NULL</span>
@@ -26,7 +26,7 @@
 
         <li class="input-list-item" id="input-long">
           <div class="title-container">
-            <span>Longitude</span>
+            <span>Long:</span>
           </div>
           <div class="data-container" id="data-field-2">
             <span class="data-element">NULL</span>
@@ -35,7 +35,7 @@
 
         <li class="input-list-item" id="input-alt">
           <div class="title-container">
-            <span>Altitude</span>
+            <span>Alt:</span>
           </div>
           <div class="data-container" id="data-field-3">
             <span class="data-element">NULL</span>
@@ -44,7 +44,7 @@
 
         <li class="input-list-item" id="input-time">
           <div class="title-container">
-            <span>Time</span>
+            <span>Time:</span>
           </div>
           <div class="data-container" id="data-field-4">
             <span class="data-element">NULL</span>
@@ -54,7 +54,7 @@
 
         <li class="input-list-item" id="input-temp">
           <div class="title-container">
-            <span>Temperature</span>
+            <span>Temp:</span>
           </div>
           <div class="data-container" id="data-field-5">
             <span class="data-element">NULL</span>
@@ -64,7 +64,7 @@
 
         <li class="input-list-item" id="input-vel">
           <div class="title-container">
-            <span>Velocity</span>
+            <span>Vel:</span>
           </div>
           <div class="data-container" id="data-field-6">
             <span class="data-element">NULL</span>
@@ -73,7 +73,7 @@
 
         <li class="input-list-item" id="input-acc">
           <div class="title-container">
-            <span>Acceleration</span>
+            <span>Acc:</span>
           </div>
           <div class="data-container" id="data-field-7">
             <span class="data-element">NULL</span>
@@ -82,7 +82,7 @@
 
         <li class="input-list-item" id="input-sat">
           <div class="title-container">
-            <span>Satellites</span>
+            <span>Satellites:</span>
           </div>
           <div class="data-container" id="data-field-8">
             <span class="data-element">NULL</span>
@@ -97,13 +97,18 @@
 
     <div id="main-container">
 
-        <h1>The Official MRT Avionics GUI</h1>
+        <div id="title-container">
+            <h1 style="display: flex; margin-left: 180px">The Official MRT Avionics GUI</h1>
+        </div>
 
-        <div class="graph-container" id="graph-alt" ></div>
-        <div class="graph-container" id="graph-temp" ></div>
-        <div class="graph-container" id="graph-position" ></div>
-        <div class="graph-container" id="graph-vel" ></div>
-        <div class="graph-container" id="graph-acc" ></div>
+        <div style="height: 33px;"></div>
+        <div id="graph-wrapper" style="margin-top: 50px; z-index: -1">
+            <div class="graph-container" id="graph-alt" ></div>
+            <div class="graph-container" id="graph-temp" ></div>
+            <div class="graph-container" id="graph-position" ></div>
+            <div class="graph-container" id="graph-vel" ></div>
+            <div class="graph-container" id="graph-acc" ></div>
+        </div>
 
         <footer>
             <span id="copyright">McGill Rocket Team &copy;2018</span>
