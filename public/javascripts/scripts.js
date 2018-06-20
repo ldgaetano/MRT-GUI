@@ -2,6 +2,37 @@
 $(function () {
     var socket = io();
 
+    // function to check launch altitude and zero the time displayed on graph
+    var zeroAltTime = null;
+    var prevAltTime = null;
+    var prevAlt = null;
+    function checkAltitude(alt, time) {
+
+        // set the change in altitude we look for in meters
+        let deltaAlt = 3.0;
+
+        // if a launch is detected
+        if ( ((alt - prevAlt) >= deltaAlt) && (zeroAltTime === null) && (prevAlt !== null)) {
+            zeroAltTime = time;
+            prevAltTime = time;
+            let newAltTime = time - zeroAltTime;
+            return newAltTime;
+        } else if (((time - zeroAltTime) > prevAltTime) && (zeroAltTime !== null) && (prevAltTime !== null)) {
+            prevAltTime = time;
+            let newAltTime = (time - zeroAltTime);
+            return newAltTime;
+        } else {
+            // Occurs if launch has not been detected
+            prevAlt = alt;
+            prevAltTime = time;
+            console.log("Launch not detected");
+            return 0;
+        }
+
+
+
+    }
+
     // Create empty altitude chart
     var chart_altitude = Highcharts.chart({
         chart: {
@@ -14,7 +45,7 @@ $(function () {
         },
         xAxis: {
             title: {
-                text: "Time (ms)"
+                text: "Time (sec)"
             },
             scrollbar: {
                 enabled: true
@@ -24,8 +55,8 @@ $(function () {
             title: {
                 text: 'Altitude (m)'
             },
-            min: -5,
-            max: 50000
+            min: 0,
+            max: 40000
         },
         series: [{
             name: "Altitude",
@@ -38,17 +69,18 @@ $(function () {
     var chart_temperature = Highcharts.chart({
         chart: {
             renderTo: 'graph-temp',
-            type: 'line'
+            type: 'line',
+            zoomType: 'xy'
         },
         title: {
             text: 'Rocket Temperature'
         },
         xAxis: {
             title: {
-                text: "Time (ms)"
+                text: "Time (sec)"
             },
             scrollbar: {
-                enabled: true
+                enabled: false
             }
         },
         yAxis: {
@@ -56,7 +88,7 @@ $(function () {
                 text: 'Temperature (Celsius)'
             },
             min: 0,
-            max: 100
+            max: 80
         },
         series: [{
             name: "Temperature",
@@ -69,7 +101,8 @@ $(function () {
     var chart_position = Highcharts.chart({
         chart: {
             renderTo: 'graph-position',
-            type: 'scatter'
+            type: 'scatter',
+            zoomType: 'xy'
         },
         title: {
             text: 'Rocket Position'
@@ -81,8 +114,8 @@ $(function () {
             scrollbar: {
                 enabled: false
             },
-            min: 0,
-            max: 360
+            min: -180,
+            max: 180
         },
         yAxis: {
             title: {
@@ -94,6 +127,67 @@ $(function () {
         series: [{
             name: "Position",
             color: '#22ee00',
+            data: []
+        }]
+    });
+
+    // Create empty velocity chart
+    var chart_vel = Highcharts.chart({
+        chart: {
+            renderTo: 'graph-vel',
+            type: 'line',
+            zoomType: 'xy'
+        },
+        title: {
+            text: 'Rocket Velocity'
+        },
+        xAxis: {
+            title: {
+                text: "Time (sec)"
+            },
+            scrollbar: {
+                enabled: false
+            }
+        },
+        yAxis: {
+            title: {
+                text: 'Velocity (m/s)'
+            },
+            max: 500
+        },
+        series: [{
+            name: "Velocity",
+            color: '#ac00ee',
+            data: []
+        }]
+    });
+
+    // Create empty acceleration chart
+    var chart_acc = Highcharts.chart({
+        chart: {
+            renderTo: 'graph-acc',
+            type: 'line',
+            zoomType: 'xy'
+        },
+        title: {
+            text: 'Rocket Acceleration'
+        },
+        xAxis: {
+            title: {
+                text: "Time (sec)"
+            },
+            scrollbar: {
+                enabled: false
+            }
+        },
+        yAxis: {
+            title: {
+                text: 'Acceleration (m/s^2)'
+            }
+        },
+        series: [{
+            name: "Acceleration",
+            color: '#ee9500',
             data: []
         }]
     });
@@ -118,9 +212,14 @@ $(function () {
         var alt_point = [dataObject.time, dataObject.alt];
         var temp_point = [dataObject.time, dataObject.temp];
         var position_point = [dataObject.long, dataObject.lat];
-        //var shift = chart_altitude.series[0].data.length > 300;
-        chart_altitude.series[0].addPoint(alt_point, true, false);
+        var vel_point = [dataObject.time, dataObject.vel];
+        var acc_point = [dataObject.time, dataObject.acc];
+        //if (checkAltitude(alt_point[1], alt_point[0]) !== 0) {
+            chart_altitude.series[0].addPoint(alt_point, true, false);
+        //}
         chart_temperature.series[0].addPoint(temp_point, true, false);
         chart_position.series[0].addPoint(position_point, true, false);
+        chart_vel.series[0].addPoint(vel_point, true, false);
+        chart_acc.series[0].addPoint(acc_point, true, false);
     });
 });

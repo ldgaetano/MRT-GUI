@@ -69,20 +69,18 @@ function toNumeric(data) {
 
 
 // Function for zeroing the time
-var zero = null;
+var zeroTime = null;
 var prevTime = null;
 function checkTime(time) {
 
-    let newTime = 0;
-
-    if (zero === null) {
-        zero = time;
+    if (zeroTime === null) {
+        zeroTime = time;
         prevTime = time;
-        newTime = (time - zero) / 1000;
+        let newTime = (time - zeroTime) / 1000;
         return newTime;
     } else if (time > prevTime) {
         prevTime = time;
-        newTime = (time - zero) / 1000;
+        let newTime = (time - zeroTime) / 1000;
         return newTime;
     } else {
         console.log("Error with time data");
@@ -124,7 +122,7 @@ var fs = require('fs');
 // SerialPort setup
 const SerialPort = require('serialport');
 const Readline = require('@serialport/parser-readline');
-const portName = '/dev/cu.usbmodem1411';
+const portName = '/dev/cu.usbmodem1421'; // Change the port name depending on which port you plug in the Arduino board
 const myPort = new SerialPort(portName, {baudRate: 9600}, (err) => {
     if (err) {
         console.log("Cannot connect to serial port: " + portName);
@@ -169,33 +167,39 @@ io.on('connection', function(socket){
         console.log("Parsed Data: ", dataParsed);
 
         // Check if array was returned successfully
-        if ((dataParsed.constructor === Array) && (dataParsed !== null)) {
+        //if ((dataParsed.constructor === Array) && (dataParsed !== null)) {
+        if ((dataParsed !== null)) {
 
             // Convert array values to integers and floats
             var dataParsedNum = toNumeric(dataParsed);
             console.log(dataParsedNum);
 
             // Save parsed numerical data to .txt file
+            // even if it doesn't send it to the browser
             ws.write(dataParsedNum + '\n');
 
             // Only send data every one second
             const threshold = 1000;
             var curTime =  Date.now();
-            var deltaTime = curTime - prevTime
+            var deltaTime = curTime - prevTime;
 
             if (deltaTime >= threshold) {
 
                 // Create JSON object
                 var dataObject = toObject(dataParsedNum);
-                console.log(dataObject);
+                console.log("JS object: ", dataObject);
 
                 io.emit('send data', JSON.stringify(dataObject));
                 console.log('request sent');
 
                 // Set the previous time to the current time
                 prevTime = curTime;
+            } else {
+                console.log("Data not sent to browser: ", dataParsedNum);
             }
 
+        } else {
+            console.log("Data not parsed successfully");
         }
     });
 
