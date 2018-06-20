@@ -55,7 +55,6 @@ $(function () {
             title: {
                 text: 'Altitude (m)'
             },
-            min: 0,
             max: 40000
         },
         series: [{
