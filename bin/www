@@ -144,69 +144,94 @@ parser.on('error', function(err) {
 var io = require('socket.io')(server);
 
 io.on('connection', function(socket){
-    console.log('USER CONNECTED');
+
+    // Create writeStream to store errors
+    var ws_error = fs.createWriteStream('data/rocket_error.txt');
 
     // Create writeStream to store data
     var ws = fs.createWriteStream('data/rocket_data.txt');
 
+    //writeStream events
     ws.on('finish', () =>  {
-        console.log("Disconnected from write stream!");
+        console.log("Disconnected from write stream");
     });
 
-    // Get current time in milliseconds
-    var prevTime = Date.now();
+    ws_error.on('finish', () =>  {
+        console.log("Finished writing to error file");
+    });
 
-    // Read data from serial port
-    // data object is of type String
-    parser.on('data', function(data) {
+    try{
+        console.log('USER CONNECTED');
 
-        console.log("Raw Data: ", data);
+        // Get current time in milliseconds
+        var prevTime = Date.now();
 
-        // Parse the data
-        var dataParsed = checkData(data);
-        console.log("Parsed Data: ", dataParsed);
+        // Read data from serial port, data object is of type string
+        parser.on('data', function(data) {
+            try{
+                console.log("Raw Data: ", data);
 
-        // Check if array was returned successfully
-        //if ((dataParsed.constructor === Array) && (dataParsed !== null)) {
-        if ((dataParsed !== null)) {
+                // Parse the data
+                var dataParsed = checkData(data);
+                console.log("Parsed Data: ", dataParsed);
 
-            // Convert array values to integers and floats
-            var dataParsedNum = toNumeric(dataParsed);
-            console.log(dataParsedNum);
+                // Check if array was returned successfully
+                //if ((dataParsed.constructor === Array) && (dataParsed !== null)) {
+                if ((dataParsed !== null)) {
 
-            // Save parsed numerical data to .txt file
-            // even if it doesn't send it to the browser
-            ws.write(dataParsedNum + '\n');
+                    // Convert array values to integers and floats
+                    var dataParsedNum = toNumeric(dataParsed);
+                    console.log(dataParsedNum);
 
-            // Only send data every one second
-            const threshold = 1000;
-            var curTime =  Date.now();
-            var deltaTime = curTime - prevTime;
+                    // Save parsed numerical data to .txt file
+                    // even if it doesn't send it to the browser
+                    ws.write(dataParsedNum + '\n');
 
-            if (deltaTime >= threshold) {
+                    // Only send data every one second
+                    const threshold = 1000;
+                    var curTime =  Date.now();
+                    var deltaTime = curTime - prevTime;
 
-                // Create JSON object
-                var dataObject = toObject(dataParsedNum);
-                console.log("JS object: ", dataObject);
+                    if (deltaTime >= threshold) {
 
-                io.emit('send data', JSON.stringify(dataObject));
-                console.log('request sent');
+                        // Create JSON object
+                        var dataObject = toObject(dataParsedNum);
+                        console.log("JS object: ", dataObject);
 
-                // Set the previous time to the current time
-                prevTime = curTime;
-            } else {
-                console.log("Data not sent to browser: ", dataParsedNum);
+                        io.emit('send data', JSON.stringify(dataObject));
+                        console.log('request sent');
+
+                        // Set the previous time to the current time
+                        prevTime = curTime;
+                    } else {
+                        console.log("Data not sent to browser: ", dataParsedNum);
+                    }
+
+                } else {
+                    console.log("Data not parsed successfully");
+                }
+
+            } catch (err) {
+                console.log(err);
+                ws_error.write(err + '\n');
             }
+        });
 
-        } else {
-            console.log("Data not parsed successfully");
-        }
-    });
+        socket.on('disconnect', function(err){
+            console.log('USER DISCONNECTED');
+            console.log(err);
 
-    socket.on('disconnect', function(){
-        console.log('USER DISCONNECTED');
-        ws.end(); // end the writeStream
-    });
+            // end the writeStream
+            ws.end();
+            ws_error.end();
+        });
+
+    } catch(error){
+        console.log(error);
+        ws_error.write(error + '\n');
+    }
+
+
 });
 
 

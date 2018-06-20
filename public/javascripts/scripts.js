@@ -192,33 +192,40 @@ $(function () {
     });
 
     socket.on('send data', function (data) {
-        console.log('request received');
+        try{
+            console.log('request received: \n');
+            console.log(data);
 
-        // Convert JSON to javascript
-        var dataObject = JSON.parse(data);
+            // Convert JSON to javascript
+            var dataObject = JSON.parse(data);
 
-        $('.data-element').remove();
-        $('#data-field-1').append($('<span class="data-element">').text(dataObject.lat));
-        $('#data-field-2').append($('<span class="data-element">').text(dataObject.long));
-        $('#data-field-3').append($('<span class="data-element">').text(dataObject.alt));
-        $('#data-field-4').append($('<span class="data-element">').text(dataObject.time));
-        $('#data-field-5').append($('<span class="data-element">').text(dataObject.temp));
-        $('#data-field-6').append($('<span class="data-element">').text(dataObject.vel));
-        $('#data-field-7').append($('<span class="data-element">').text(dataObject.acc));
-        $('#data-field-8').append($('<span class="data-element">').text(dataObject.sat));
+            $('.data-element').remove();
+            $('#data-field-1').append($('<span class="data-element">').text(dataObject.lat));
+            $('#data-field-2').append($('<span class="data-element">').text(dataObject.long));
+            $('#data-field-3').append($('<span class="data-element">').text(dataObject.alt));
+            $('#data-field-4').append($('<span class="data-element">').text(dataObject.time));
+            $('#data-field-5').append($('<span class="data-element">').text(dataObject.temp));
+            $('#data-field-6').append($('<span class="data-element">').text(dataObject.vel));
+            $('#data-field-7').append($('<span class="data-element">').text(dataObject.acc));
+            $('#data-field-8').append($('<span class="data-element">').text(dataObject.sat));
 
-        // Add data point to charts
-        var alt_point = [dataObject.time, dataObject.alt];
-        var temp_point = [dataObject.time, dataObject.temp];
-        var position_point = [dataObject.long, dataObject.lat];
-        var vel_point = [dataObject.time, dataObject.vel];
-        var acc_point = [dataObject.time, dataObject.acc];
-        //if (checkAltitude(alt_point[1], alt_point[0]) !== 0) {
+            // Add data point to charts
+            var alt_point = [dataObject.time, dataObject.alt];
+            var temp_point = [dataObject.time, dataObject.temp];
+            var position_point = [dataObject.long, dataObject.lat];
+            var vel_point = [dataObject.time, dataObject.vel];
+            var acc_point = [dataObject.time, dataObject.acc];
+
             chart_altitude.series[0].addPoint(alt_point, true, false);
-        //}
-        chart_temperature.series[0].addPoint(temp_point, true, false);
-        chart_position.series[0].addPoint(position_point, true, false);
-        chart_vel.series[0].addPoint(vel_point, true, false);
-        chart_acc.series[0].addPoint(acc_point, true, false);
+            chart_temperature.series[0].addPoint(temp_point, true, false);
+            chart_position.series[0].addPoint(position_point, true, false);
+            chart_vel.series[0].addPoint(vel_point, true, false);
+            chart_acc.series[0].addPoint(acc_point, true, false);
+
+        } catch(err){
+            console.log('request error: \n');
+            console.log(err);
+        }
+
     });
 });
