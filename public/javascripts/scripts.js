@@ -55,7 +55,7 @@ $(function () {
         },
         yAxis: {
             title: {
-                text: 'Altitude (m)'
+                text: 'Altitude (ft)'
             },
             max: 40000,
             gridLineWidth: 1
@@ -208,7 +208,7 @@ $(function () {
             $('.data-element').remove();
             $('#data-field-1').append($('<span class="data-element">').text(dataObject.lat + " " + "(deg)"));
             $('#data-field-2').append($('<span class="data-element">').text(dataObject.long + " " + "(deg)"));
-            $('#data-field-3').append($('<span class="data-element">').text(dataObject.alt + " " + "(m)"));
+            $('#data-field-3').append($('<span class="data-element">').text(dataObject.alt + " " + "(ft)"));
             $('#data-field-4').append($('<span class="data-element">').text(dataObject.time + " " + "(sec)"));
             $('#data-field-5').append($('<span class="data-element">').text(dataObject.temp + " " + "(deg. Celsius)"));
             $('#data-field-6').append($('<span class="data-element">').text(dataObject.vel + " " + "(m/s)"));
