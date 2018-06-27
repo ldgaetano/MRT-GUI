@@ -50,7 +50,7 @@ $(function () {
                 text: "Time (sec)"
             },
             scrollbar: {
-                enabled: true
+                enabled: false
             }
         },
         yAxis: {
@@ -58,6 +58,7 @@ $(function () {
                 text: 'Altitude (ft)'
             },
             max: 40000,
+            min: -10,
             gridLineWidth: 1
         },
         series: [{

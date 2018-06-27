@@ -148,15 +148,22 @@ io.on('connection', function(socket){
     // Create time stamp
     var ts = new Date();
 
-    // Create writeStream to store data
+    // Create writeStream to store raw data
+    var ws_raw = fs.createWriteStream('data/rocket_data_raw_'+ts+'_.txt');
+
+    // Create writeStream to store parsed data
     var ws = fs.createWriteStream('data/rocket_data_'+ts+'_.txt');
 
     // Create writeStream to store errors
     var ws_error = fs.createWriteStream('data/rocket_error_'+ts+'_.txt');
 
     //writeStream events
+    ws_raw.on('finish', () => {
+        console.log("Finished writing to raw data file");
+    });
+
     ws.on('finish', () =>  {
-        console.log("Disconnected from write stream");
+        console.log("Finished writing to parsed data file");
     });
 
     ws_error.on('finish', () =>  {
@@ -166,6 +173,7 @@ io.on('connection', function(socket){
     try{
         console.log('USER CONNECTED');
         let columns = 'Latitude, Longitude, Altitude, Time, Temperature, Velocity, Acceleration, Satellites';
+        ws_raw.write(columns + '\n');
         ws.write(columns + '\n');
 
         // Get current time in milliseconds
@@ -175,6 +183,7 @@ io.on('connection', function(socket){
         parser.on('data', function(data) {
             try{
                 console.log("Raw Data: ", data);
+                ws_raw.write(data + '\n');
 
                 // Parse the data
                 var dataParsed = checkData(data);
@@ -225,10 +234,7 @@ io.on('connection', function(socket){
         socket.on('disconnect', function(err){
             console.log('USER DISCONNECTED');
             console.log(err);
-
-            // end the writeStream
-            //ws.end();
-            //ws_error.end();
+            ws_error.write(err + '\n');
         });
 
     } catch(error){
