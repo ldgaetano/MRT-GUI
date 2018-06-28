@@ -2,39 +2,6 @@
 $(function () {
     var socket = io();
 
-    // function to check launch altitude and zero the time displayed on graph
-    var zeroAltTime = null;
-    var prevAltTime = null;
-    var prevAlt = null;
-    /*
-    function checkAltitude(alt, time) {
-
-        // set the change in altitude we look for in meters
-        let deltaAlt = 3.0;
-
-        // if a launch is detected
-        if ( ((alt - prevAlt) >= deltaAlt) && (zeroAltTime === null) && (prevAlt !== null)) {
-            zeroAltTime = time;
-            prevAltTime = time;
-            let newAltTime = time - zeroAltTime;
-            return newAltTime;
-        } else if (((time - zeroAltTime) > prevAltTime) && (zeroAltTime !== null) && (prevAltTime !== null)) {
-            prevAltTime = time;
-            let newAltTime = (time - zeroAltTime);
-            return newAltTime;
-        } else {
-            // Occurs if launch has not been detected
-            prevAlt = alt;
-            prevAltTime = time;
-            console.log("Launch not detected");
-            return 0;
-        }
-
-
-
-    }
-    */
-
     // Create empty altitude chart
     var chart_altitude = Highcharts.chart({
         chart: {
@@ -198,6 +165,7 @@ $(function () {
         }]
     });
 
+    // Check for request event
     socket.on('send data', function (data) {
         try{
             console.log('request received: \n');
